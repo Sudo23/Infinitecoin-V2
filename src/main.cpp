@@ -2176,7 +2176,7 @@ CBigNum CBlockIndex::GetBlockTrust() const
     {
         // Calculate work amount for block
         CBigNum bnPoWTrust = (bnProofOfWorkLimit / (bnTarget+1));
-        return bnPoWTrust > 0 ? bnPoWTrust : 1;
+        return bnPoWTrust > 1 ? bnPoWTrust : 1;
     }
 }
 bool CBlockIndex::IsSuperMajority(int minVersion, const CBlockIndex* pstart, unsigned int nRequired, unsigned int nToCheck)
