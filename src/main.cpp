@@ -1002,10 +1002,9 @@ static const int64 nTargetTimespan = 15 * 60;  // 15 mins
 static const int64 nTargetSpacingWorkMax = 12 * nStakeTargetSpacing; // 6 mins
 
 //
-// minimum amount of work that could possibly be required nTime after
-// minimum work required was nBase
+// maximum nBits value could possible be required nTime after
 //
-unsigned int ComputeMinWork(unsigned int nBase, int64 nTime)
+unsigned int ComputeMaxBits(CBigNum bnTargetLimit, unsigned int nBase, int64 nTime)
 {
     CBigNum bnTargetLimit = bnProofOfWorkLimit;
 
@@ -1021,8 +1020,24 @@ unsigned int ComputeMinWork(unsigned int nBase, int64 nTime)
     if (bnResult > bnTargetLimit)
         bnResult = bnTargetLimit;
     return bnResult.GetCompact();
-}
+	}
+	//
+	// minimum amount of work that could possibly be required nTime after
+	// minimum proof-of-work required was nBase
+	//
+	unsigned int ComputeMinWork(unsigned int nBase, int64 nTime)
+	{
+    return ComputeMaxBits(bnProofOfWorkLimit, nBase, nTime);
+	}
 
+//
+// minimum amount of stake that could possibly be required nTime after
+// minimum proof-of-stake required was nBase
+//
+unsigned int ComputeMinStake(unsigned int nBase, int64 nTime, unsigned int nBlockTime)
+{
+    return ComputeMaxBits(bnProofOfStakeLimit, nBase, nTime);
+}
 // ppcoin: find last block index up to pindex
 const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfStake)
 {
@@ -1031,16 +1046,12 @@ const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfSta
     return pindex;
 }
 
-unsigned int static GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfStake)
+unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfStake)
 {
-    CBigNum bnTargetLimit = bnProofOfWorkLimit;
+    
 
-    if(fProofOfStake)
-    {
-        // Proof-of-Stake blocks has own target limit since nVersion=3 supermajority on mainNet and always on testNet
-        bnTargetLimit = bnProofOfStakeLimit;
-    }
-
+    CBigNum bnTargetLimit = !fProofOfStake ? bnProofOfWorkLimit : bnProofOfStakeLimit;
+    
     if (pindexLast == NULL)
         return bnTargetLimit.GetCompact(); // genesis block
 
@@ -1053,8 +1064,7 @@ unsigned int static GetNextTargetRequired(const CBlockIndex* pindexLast, bool fP
 
     int64 nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
 
-    // ppcoin: target change every block
-    // ppcoin: retarget with exponential moving toward target spacing
+    
     CBigNum bnNew;
     bnNew.SetCompact(pindexPrev->nBits);
     int64 nTargetSpacing = fProofOfStake? nStakeTargetSpacing : min(nTargetSpacingWorkMax, (int64) nStakeTargetSpacing * (1 + pindexLast->nHeight - pindexPrev->nHeight));
@@ -2150,7 +2160,25 @@ bool CBlock::AcceptBlock()
 
     return true;
 }
+CBigNum CBlockIndex::GetBlockTrust() const
+{
+    CBigNum bnTarget;
+    bnTarget.SetCompact(nBits);
+    if (bnTarget <= 0)
+        return 0;
 
+   if (IsProofOfStake())
+    {
+        // Return trust score as usual
+        return (CBigNum(1)<<256) / (bnTarget+1);
+    }
+    else
+    {
+        // Calculate work amount for block
+        CBigNum bnPoWTrust = (bnProofOfWorkLimit / (bnTarget+1));
+        return bnPoWTrust > 0 ? bnPoWTrust : 1;
+    }
+}
 bool CBlockIndex::IsSuperMajority(int minVersion, const CBlockIndex* pstart, unsigned int nRequired, unsigned int nToCheck)
 {
     unsigned int nFound = 0;
@@ -2203,7 +2231,10 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
         CBigNum bnNewBlock;
         bnNewBlock.SetCompact(pblock->nBits);
         CBigNum bnRequired;
-        bnRequired.SetCompact(ComputeMinWork(GetLastBlockIndex(pcheckpoint, pblock->IsProofOfStake())->nBits, deltaTime));
+        if (pblock->IsProofOfStake())
+           bnRequired.SetCompact(ComputeMinStake(GetLastBlockIndex(pcheckpoint, true)->nBits, deltaTime, pblock->nTime));
+       else
+           bnRequired.SetCompact(ComputeMinWork(GetLastBlockIndex(pcheckpoint, false)->nBits, deltaTime));
         if (bnNewBlock > bnRequired)
         {
             if (pfrom)
