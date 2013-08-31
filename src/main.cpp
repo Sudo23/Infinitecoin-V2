@@ -962,13 +962,17 @@ int64 GetProofOfStakeReward(int64 nCoinAge, unsigned int nBits, unsigned int nTi
 {
     int64 nRewardCoinYear;
 
+    if(fTestNet || nTime > PROTOCOL_SWITCH_TIME)
+    {
+        // Stage 2 of emission process is PoS-based. It will be active on mainNet since 20 Jun 2013.
+
         CBigNum bnRewardCoinYearLimit = MAX_MINT_PROOF_OF_STAKE; // Base stake mint rate, 100% year interest
         CBigNum bnTarget;
         bnTarget.SetCompact(nBits);
         CBigNum bnTargetLimit = bnProofOfStakeLimit;
         bnTargetLimit.SetCompact(bnTargetLimit.GetCompact());
 
-        // InfinitecoinV2: reward for coin-year is cut in half every 64x multiply of PoS difficulty
+        // BottleCaps: reward for coin-year is cut in half every 64x multiply of PoS difficulty
         // A reasonably continuous curve is used to avoid shock to market
         // (nRewardCoinYearLimit / nRewardCoinYear) ** 4 == bnProofOfStakeLimit / bnTarget
         //
@@ -990,15 +994,15 @@ int64 GetProofOfStakeReward(int64 nCoinAge, unsigned int nBits, unsigned int nTi
         }
 
         nRewardCoinYear = bnUpperBound.getuint64();
-        	if (nTime > REWARD_FIX_SWITCH_TIME)
-          	nRewardCoinYear = min(nRewardCoinYear, MAX_MINT_PROOF_OF_STAKE);
-    		else
-          	nRewardCoinYear = min((nRewardCoinYear / CENT) * CENT, MAX_MINT_PROOF_OF_STAKE);
-    	}
-    		else
-    	{
+          if (nTime > REWARD_FIX_SWITCH_TIME)
+          nRewardCoinYear = min(nRewardCoinYear, MAX_MINT_PROOF_OF_STAKE);
+    else
+          nRewardCoinYear = min((nRewardCoinYear / CENT) * CENT, MAX_MINT_PROOF_OF_STAKE);
+    }
+    else
+    {
         // Old creation amount per coin-year, 5% fixed stake mint rate
-		 nRewardCoinYear = 0.015 * CENT;
+        nRewardCoinYear = 0.015 * CENT;
     }
 
     int64 nSubsidy = nCoinAge * 33 / (365 * 33 + 8) * nRewardCoinYear;
@@ -1006,21 +1010,20 @@ int64 GetProofOfStakeReward(int64 nCoinAge, unsigned int nBits, unsigned int nTi
         nSubsidy = (nCoinAge * 33 * nRewardCoinYear) / (365 * 33 + 8) ;
   else
         nSubsidy = nCoinAge * 33 / (365 * 33 + 8) * nRewardCoinYear;
+
     if (fDebug && GetBoolArg("-printcreation"))
         printf("GetProofOfStakeReward(): create=%s nCoinAge=%"PRI64d" nBits=%d\n", FormatMoney(nSubsidy).c_str(), nCoinAge, nBits);
     return nSubsidy;
 }
 
-static const int64 nTargetTimespan = 15 * 60;  // 15 mins
-static const int64 nTargetSpacingWorkMax = 12 * nStakeTargetSpacing; // 6 mins
+static const int64 nTargetTimespan = 0.16 * 24 * 60 * 60;  // 4-hour
+static const int64 nTargetSpacingWorkMax = 12 * nStakeTargetSpacing; // 2-hour
 
 //
 // maximum nBits value could possible be required nTime after
 //
 unsigned int ComputeMaxBits(CBigNum bnTargetLimit, unsigned int nBase, int64 nTime)
 {
-    CBigNum bnTargetLimit = bnProofOfWorkLimit;
-
     CBigNum bnResult;
     bnResult.SetCompact(nBase);
     bnResult *= 2;
