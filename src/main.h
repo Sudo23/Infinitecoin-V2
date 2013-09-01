@@ -29,7 +29,7 @@ static const unsigned int MAX_BLOCK_SIZE = 1000000;
 static const unsigned int MAX_BLOCK_SIZE_GEN = MAX_BLOCK_SIZE/2;
 static const unsigned int MAX_BLOCK_SIGOPS = MAX_BLOCK_SIZE/50;
 static const unsigned int MAX_ORPHAN_TRANSACTIONS = MAX_BLOCK_SIZE/100;
-static const unsigned int MAX_TX_COMMENT_LEN = 140; // InfinitecoinV2: 128 bytes + little extra
+static const unsigned int MAX_TX_COMMENT_LEN = 140; // ColossusCoin: 128 bytes + little extra
 static const unsigned int MAX_INV_SZ = 50000;
 static const int64 MIN_TX_FEE = 0.1 * CENT;
 static const int64 MIN_RELAY_TX_FEE = 0.1 * CENT;
@@ -40,7 +40,7 @@ static const int64 MAX_MINT_PROOF_OF_STAKE = 0.5 * CENT;
 
 static const int64 MIN_TXOUT_AMOUNT = MIN_TX_FEE;
 static const unsigned int PROTOCOL_SWITCH_TIME = 1371686400; // 20 Jun 2013 00:00:00
-static const unsigned int REWARD_FIX_SWITCH_TIME = 1378512000; // 7 SEP 2013 00:00:00 GMT
+static const unsigned int REWARD_FIX_SWITCH_TIME = 1378598400; // 9 SEP 2013 00:00:00 GMT
 
 inline bool MoneyRange(int64 nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 // Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp.

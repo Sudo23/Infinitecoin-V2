@@ -18,14 +18,14 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "InfinitecoinV2"
-            VALUE "FileDescription",    "InfinitecoinV2-Qt (OSS GUI client for InfinitecoinV2)"
+            VALUE "CompanyName",        "ColossusCoin"
+            VALUE "FileDescription",    "ColossusCoin-Qt (OSS GUI client for ColossusCoin)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
-            VALUE "InternalName",       "InfinitecoinV2-qt"
-            VALUE "LegalCopyright",     "2009-2012 The Bitcoin developers, 2012-2013 The InfinitecoinV2 & PPCoin developers"
+            VALUE "InternalName",       "ColossusCoin-qt"
+            VALUE "LegalCopyright",     "2009-2012 The Bitcoin developers, 2012-2013 The ColossusCoin & PPCoin developers"
             VALUE "LegalTrademarks1",   "Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
-            VALUE "OriginalFilename",   "InfinitecoinV2-qt.exe"
-            VALUE "ProductName",        "InfinitecoinV2-Qt"
+            VALUE "OriginalFilename",   "ColossusCoin-qt.exe"
+            VALUE "ProductName",        "ColossusCoin-Qt"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END
     END

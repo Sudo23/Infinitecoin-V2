@@ -276,7 +276,7 @@ class CBitcoinAddress : public CBase58Data
 public:
     enum
     {
-        PUBKEY_ADDRESS = 2,  // InfinitecoinV2: address begin with 's'
+        PUBKEY_ADDRESS = 2,  // ColossusCoin: address begin with 's'
         SCRIPT_ADDRESS = 8, 
         PUBKEY_ADDRESS_TEST = 111,
         SCRIPT_ADDRESS_TEST = 196,

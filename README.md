@@ -1,4 +1,6 @@
-InfinitecoinV2 
+ColossusCoin 
+
+Collossuscoin was originally known as InfinitecoinV2.
 
 700 Billion Coins Total
 

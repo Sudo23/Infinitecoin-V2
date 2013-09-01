@@ -6,14 +6,14 @@ USE_UPNP:=0
 USE_IPV6:=1
 
 INCLUDEPATHS= \
- -I"C:\boost_1_53_0" \
- -I"C:\db-4.8.30.NC\build_unix" \
- -I"C:\openssl-1.0.1e\include" 
+ -I"C:\deps\boost\" \
+ -I"C:\deps\db\build_unix\" \
+ -I"C:\deps\openssl\include\" 
 
 LIBPATHS= \
- -L"C:\boost_1_53_0\stage\lib" \
- -L"C:\db-4.8.30.NC\build_unix" \
- -L"C:\openssl-1.0.1e" 
+ -L"C:\deps\boost\stage\lib" \
+ -L"C:\deps\db\build_unix" \
+ -L"C:\deps\openssl" 
 
 LIBS= \
  -l boost_system-mgw45-mt-d-1_53 \
@@ -23,6 +23,7 @@ LIBS= \
  -l db_cxx \
  -l ssl \
  -l crypto
+
 
 DEFS=-DWIN32 -D_WINDOWS -DBOOST_THREAD_USE_LIB -DBOOST_SPIRIT_THREADSAFE -D__NO_SYSTEM_INCLUDES
 DEBUGFLAGS=-g
