@@ -1,9 +1,9 @@
-Building InfinitecoinV2
+Building Colossuscoin
 
-See doc/readme-qt.rst for instructions on building InfinitecoinV2 QT,
+See doc/readme-qt.rst for instructions on building Colossuscoin QT,
 the intended-for-end-users, nice-graphical-interface, reference
-implementation of InfinitecoinV2.
+implementation of Colossuscoin.
 
-See doc/build-*.txt for instructions on building InfinitecoinV2d,
+See doc/build-*.txt for instructions on building Colossuscoind,
 the intended-for-services, no-graphical-interface, reference
-implementation of InfinitecoinV2.
+implementation of Colossuscoin.
