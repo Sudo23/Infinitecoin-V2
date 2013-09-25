@@ -83,9 +83,9 @@ OBJS= \
     obj/scrypt-x86.o \
     obj/scrypt-x86_64.o
 
-all: infinitecoinv2d.exe
+all: colossuscoind.exe
 
-test check: test_infinitecoinv2.exe FORCE
+test check: test_colossuscoin.exe FORCE
 	test_BottleCaps.exe
 
 obj/%.o: %.cpp $(HEADERS)
@@ -97,7 +97,7 @@ obj/scrypt-x86.o: scrypt-x86.S
 obj/scrypt-x86_64.o: scrypt-x86_64.S
 	$(CXX) -c $(xCXXFLAGS) -MMD -o $@ $<
 
-infinitecoinv2d.exe: $(OBJS:obj/%=obj/%)
+colossuscoind.exe: $(OBJS:obj/%=obj/%)
 	g++ $(CFLAGS) $(LDFLAGS) -o $@ $(LIBPATHS) $^ $(LIBS)
 
 TESTOBJS := $(patsubst test/%.cpp,obj-test/%.o,$(wildcard test/*.cpp))
@@ -105,11 +105,11 @@ TESTOBJS := $(patsubst test/%.cpp,obj-test/%.o,$(wildcard test/*.cpp))
 obj-test/%.o: test/%.cpp $(HEADERS)
 	g++ -c $(TESTDEFS) $(CFLAGS) -o $@ $<
 
-test_infinitecoinv2.exe: $(TESTOBJS) $(filter-out obj/init.o,$(OBJS:obj/%=obj/%))
+test_colossuscoin.exe: $(TESTOBJS) $(filter-out obj/init.o,$(OBJS:obj/%=obj/%))
 	g++ $(CFLAGS) $(LDFLAGS) -o $@ $(LIBPATHS) $^ -lboost_unit_test_framework $(LIBS)
 
 clean:
-	-del /Q infinitecoinv2d test_infinitecoinv2
+	-del /Q colossuscoind test_colossuscoin
 	-del /Q obj\*
 	-del /Q obj-test\*
 
