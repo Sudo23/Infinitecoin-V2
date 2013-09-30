@@ -2,11 +2,11 @@ ColossusCoin
 
 Collossuscoin was originally known as InfinitecoinV2.
 
-700 Billion Coins Total
+550 Billion Coins Total
 
 5,000,000 per block halving every 50,000 blocks.
 
-Approx 550 billion mined coins and 150 billion POS possible. Huge overhead for big POS rewards.
+Approx 450 billion mined coins and 100 billion POS possible. Huge overhead for big POS rewards.
 
 Proof of Stake 0.5%, 15 days/30 Max Weight
 
