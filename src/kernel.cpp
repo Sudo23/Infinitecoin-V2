@@ -23,6 +23,7 @@ static std::map<int, unsigned int> mapStakeModifierCheckpoints =
     ( 42000, 0x5743a9a6u )
     ( 91000, 0xa21aebb2u )
     ( 101005, 0x945b0842u )
+    ( 118656, 0x4e5c5b04u )
     ;
 
 // Get the last stake modifier and its generation time from a given block
