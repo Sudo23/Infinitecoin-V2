@@ -946,7 +946,7 @@ int generateMTRandom(unsigned int s, int range)
 
 
 // miner's coin base reward based on nBits
-int64 GetProofOfWorkReward(int nHeight, int64 nFees, uint256 prevHash)
+int64 GetProofOfWorkReward(unsigned int nHeight)
 {
 	int64 nSubsidy = 0 * COIN;
 
@@ -954,7 +954,7 @@ int64 GetProofOfWorkReward(int nHeight, int64 nFees, uint256 prevHash)
 
 	nSubsidy >>= (nHeight / 50000); 
 
-    return nSubsidy + nFees;
+    return nSubsidy;
 }
 
 // miner's coin stake reward based on nBits and coin age spent (coin-days)
@@ -1606,15 +1606,6 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
             return error("ConnectBlock() : UpdateTxIndex failed");
     }
 
-	uint256 prevHash = 0;
-	if(pindex->pprev)
-	{
-		prevHash = pindex->pprev->GetBlockHash();
-		// printf("==> Got prevHash = %s\n", prevHash.ToString().c_str());
-	}
-
-	if (vtx[0].GetValueOut() > GetProofOfWorkReward(pindex->nHeight, nFees, prevHash))
-		return false;
 
     // Update block index on disk without changing it in memory.
     // The memory index structure will be changed after the db commits.
@@ -4186,7 +4177,7 @@ CBlock* CreateNewBlock(CWallet* pwallet, bool fProofOfStake)
             printf("CreateNewBlock(): total size %"PRI64u"\n", nBlockSize);
 
         if (pblock->IsProofOfWork())
-            pblock->vtx[0].vout[0].nValue = GetProofOfWorkReward(pindexPrev->nHeight+1, nFees, pindexPrev->GetBlockHash());
+            pblock->vtx[0].vout[0].nValue = GetProofOfWorkReward(pindexPrev->nHeight+1);
 
         // Fill in header
         pblock->hashPrevBlock  = pindexPrev->GetBlockHash();
