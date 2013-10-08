@@ -2898,7 +2898,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         }
 	
         
-    if(nTime < 1381449660)
+    if(nTime < 1381622460)
         {
             if(pfrom->nVersion < 60000)
                 badVersion = true;
