@@ -16,8 +16,8 @@ CONFIG += no_include_pwd
 #BOOST_LIB_PATH=C:/deps/boost/stage/lib
 #BDB_INCLUDE_PATH=c:/deps/db/build_unix
 #BDB_LIB_PATH=c:/deps/db/build_unix
-#OPENSSL_INCLUDE_PATH=c:/deps/ssl/include
-#OPENSSL_LIB_PATH=c:/deps/ssl
+#OPENSSL_INCLUDE_PATH=c:/deps/openssl-1.0.1g/include
+#OPENSSL_LIB_PATH=c:/deps/openssl-1.0.1g
 #MINIUPNPC_LIB_PATH=c:/deps/miniupnpc
 #MINIUPNPC_INCLUDE_PATH=c:/deps
 
